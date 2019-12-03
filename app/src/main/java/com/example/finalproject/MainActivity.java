@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
@@ -47,7 +49,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.add(itemEntered);
                 itemET.setText("");
                 FileHelper.writeData(items, this);
-                Toast.makeText(this, "Item Added", Toast.LENGTH_SHORT).show();
+                Snackbar mySnackbar = Snackbar.make(findViewById(R.id.myCoordinatorLayout), "Item Added",
+                        Snackbar.LENGTH_SHORT);
+                mySnackbar.setAction("Add to Calendar", new CalendarBtnListener());
+                mySnackbar.show();
                 break;
         }
     }
@@ -56,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         items.remove(position);
         adapter.notifyDataSetChanged();
-        Toast.makeText(this, "Item Deleted", Toast.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.myCoordinatorLayout), "Item Deleted",
+                Snackbar.LENGTH_SHORT).show();
     }
 }
