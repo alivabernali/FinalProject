@@ -1,55 +1,61 @@
 package com.example.finalproject;
 
-import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
+import android.os.Bundle;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+
+    private EditText itemET;
+    private Button btn;
+    private ListView itemsList;
+    private ArrayList<String> items;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        itemET = findViewById(R.id.item_edit_text);
+        btn = findViewById(R.id.add_btn);
+        itemsList = findViewById(R.id.items_list);
+
+        items = FileHelper.readData(this);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+        itemsList.setAdapter(adapter);
+
+        btn.setOnClickListener(this);
+        itemsList.setOnItemClickListener(this);
+
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.add_btn:
+                String itemEntered = itemET.getText().toString();
+                adapter.add(itemEntered);
+                itemET.setText("");
+                FileHelper.writeData(items, this);
+                Toast.makeText(this, "Item Added", Toast.LENGTH_SHORT).show();
+                break;
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        items.remove(position);
+        adapter.notifyDataSetChanged();
+        Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show();
     }
 }
