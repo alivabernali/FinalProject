@@ -56,6 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         items.remove(position);
         adapter.notifyDataSetChanged();
-        Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Item Deleted", Toast.LENGTH_SHORT).show();
     }
 }
