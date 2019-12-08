@@ -21,5 +21,6 @@ public class CalendarBtnListener extends MainActivity implements View.OnClickLis
         calendarIntent.putExtra(CalendarContract.Events.TITLE, itemET.getText().toString());
         calendarIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "Secret dojo");
         startActivity(calendarIntent);
+        return;
     }
 }
