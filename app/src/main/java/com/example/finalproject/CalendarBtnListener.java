@@ -1,23 +1,25 @@
 package com.example.finalproject;
 
 import android.content.Intent;
+import android.provider.CalendarContract;
 import android.view.View;
 
 import java.util.Calendar;
 
-public class CalendarBtnListener implements View.OnClickListener {
+public class CalendarBtnListener extends MainActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
         // Code to add to calendar
-        Calendar calendarEvent = Calendar.getInstance();
-        Intent intent = new Intent(Intent.ACTION_EDIT);
-        intent.setType("vnd.android.cursor.item/event");
-        intent.putExtra("beginTime", calendarEvent.getTimeInMillis());
-        intent.putExtra("endTime", calendarEvent.getTimeInMillis() + 60 * 60 * 1000);
-        intent.putExtra("title", "Sample Event");
-        intent.putExtra("allDay", true);
-        intent.putExtra("rule", "FREQ=YEARLY");
-        //startActivity(intent);
+        Intent calendarIntent = new Intent(Intent.ACTION_INSERT, CalendarContract.Events.CONTENT_URI);
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(2012, 0, 19, 7, 30);
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(2012, 0, 19, 10, 30);
+        calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
+        calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis());
+        calendarIntent.putExtra(CalendarContract.Events.TITLE, itemET.getText().toString());
+        calendarIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "Secret dojo");
+        startActivity(calendarIntent);
     }
 }

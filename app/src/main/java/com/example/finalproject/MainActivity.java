@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private EditText itemET;
+    public EditText itemET;
     private Button btn;
     private ListView itemsList;
     private ArrayList<String> items;
